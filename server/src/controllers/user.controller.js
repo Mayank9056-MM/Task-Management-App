@@ -89,7 +89,7 @@ export const loginUser = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        { userData, accessToken },
+        { user:userData, accessToken },
         "User logged in successfully",
       ),
     );
