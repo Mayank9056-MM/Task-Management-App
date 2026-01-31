@@ -81,8 +81,10 @@ app.use((err, req, res, next) => {
 });
 
 // import routes
+import router from "./routes/index.js";
 
 // routes
+app.use("/api/v1", router);
 
 // It should be always at bottom
 // 404 handler
