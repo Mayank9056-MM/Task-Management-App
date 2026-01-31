@@ -16,7 +16,6 @@ const generateAccessToken = async (userId) => {
 
     return { accessToken };
   } catch (error) {
-    console.log(error)
     throw new ApiError(
       500,
       "something went wrong while generating access token",
@@ -32,11 +31,10 @@ export const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
-
   const existingUser = await User.findOne({ email });
 
   if (existingUser) {
-    throw new ApiError(409, "User with email already exists");
+    throw new ApiError(400, "User with email already exists");
   }
 
   const user = await User.create({
@@ -88,7 +86,13 @@ export const loginUser = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .cookie("accessToken", accessToken, options)
-    .json(new ApiResponse(200, userData, "User logged in successfully"));
+    .json(
+      new ApiResponse(
+        200,
+        { userData, accessToken },
+        "User logged in successfully",
+      ),
+    );
 });
 
 export const getUserProfile = asyncHandler(async (req, res) => {
