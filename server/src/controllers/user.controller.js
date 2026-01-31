@@ -16,6 +16,7 @@ const generateAccessToken = async (userId) => {
 
     return { accessToken };
   } catch (error) {
+    console.log(error)
     throw new ApiError(
       500,
       "something went wrong while generating access token",
@@ -31,6 +32,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
+
   const existingUser = await User.findOne({ email });
 
   if (existingUser) {
@@ -40,7 +42,7 @@ export const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create({
     email,
     password,
-    name: name.toLowerCase(),
+    name: name,
   });
 
   const createdUser = await User.findById(user._id).select("-password");
