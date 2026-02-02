@@ -4,7 +4,7 @@ import User from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 // helper functions
-const generateAccessToken = async (userId) => {
+const generateToken = async (userId) => {
   try {
     const user = await User.findById(userId);
 
@@ -75,7 +75,7 @@ export const loginUser = asyncHandler(async (req, res) => {
 
   const userData = await User.findById(user._id).select("-password");
 
-  const { accessToken } = await generateAccessToken(user._id);
+  const { accessToken } = await generateToken(user._id);
 
   const options = {
     httpOnly: true,
@@ -89,7 +89,7 @@ export const loginUser = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        { user:userData, accessToken },
+        { user: userData, accessToken },
         "User logged in successfully",
       ),
     );
